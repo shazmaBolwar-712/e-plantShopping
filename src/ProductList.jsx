@@ -4,7 +4,7 @@ import CartItem from './CartItem';
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-
+      const [addedToCart, setAddedToCart] = useState([]);
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -232,6 +232,11 @@ function ProductList({ onHomeClick }) {
         fontSize: '30px',
         textDecoration: 'none',
     }
+    const handleAddToCart = (plantName) => {
+  if (!addedToCart.includes(plantName)) {
+    setAddedToCart([...addedToCart, plantName]);
+  }
+};
 
     const handleHomeClick = (e) => {
         e.preventDefault();
@@ -274,7 +279,21 @@ function ProductList({ onHomeClick }) {
             </div>
             {!showCart ? (
                 <div className="product-grid">
-
+                {showPlants &&
+    plantsArray.map((categoryObj, index) => (
+      <div key={index}>
+        <h2 style={{ gridColumn: '1 / -1', color: '#4CAF50' }}>{categoryObj.category}</h2>
+        <div className="plant-category">
+          {categoryObj.plants.map((plant, idx) => (
+            <div key={idx} className="plant-card">
+              <h3>{plant.name}</h3>
+              <img src={plant.image} alt={plant.name} />
+              <p>{plant.description}</p>
+              <strong>{plant.cost}</strong>
+              <button className="add-to-cart-btn" 
+              onClick={() => handleAddToCart(plant.name)}
+        disabled={addedToCart.includes(plant.name)}>
+        {addedToCart.includes(plant.name) ? 'Added' : 'Add to Cart'}</button>
 
                 </div>
             ) : (
